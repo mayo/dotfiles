@@ -1,0 +1,23 @@
+[user]
+  name = Mayo Jordanov
+  email = mayo@oyam.ca
+[alias]
+    ci = commit
+    st = status
+    co = checkout
+  up = pull --rebase
+[color]
+  ui = auto
+[push]
+  default = simple
+[diff]
+  tool = mvimdiff
+[merge]
+	tool = fugitive
+[mergetool]
+  keepBackup = true
+
+[difftool "mvimdiff"]
+  cmd = mvim -f -d \"$LOCAL\" \"$REMOTE\"
+[mergetool "fugitive"]
+	cmd = vim -f -c \"Gdiff\" \"$MERGED\"

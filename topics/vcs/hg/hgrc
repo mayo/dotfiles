@@ -1,0 +1,34 @@
+[ui]
+username = Mayo Jordanov <mayo@oyam.ca>
+ssh = ssh -C
+
+[extensions]
+hgext.mq = 
+hgext.convert = 
+record =
+hgext.extdiff = 
+rebase = 
+bookmarks = 
+shelve = 
+
+[merge-patterns]
+** = filemerge
+
+[merge-tools]
+filemerge.executable = mvim
+filemerge.args = -d $local $other --nofork
+filemerge.checkchanged = true
+
+#filemerge.executable = opendiff
+#filemerge.args = $local $other
+##filemerge.checkchanged = true
+#filemerge.gui = true
+
+[extdiff]
+cmd.ksdiff = /usr/local/bin/ksdiff
+opts.ksdiff = --changeset --wait --filelist
+
+cmd.vimdiff = mvim
+#opts.vimdiff = -f '+next' '+execute "DirDiff" argv(0) argv(1)'
+opts.vimdiff = -d
+

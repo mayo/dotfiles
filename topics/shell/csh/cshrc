@@ -1,0 +1,88 @@
+alias h history 25
+alias j jobs -l
+alias la ls -a
+alias lf ls -FA
+alias ll ls -lA
+
+umask 22
+
+setenv PAGER more
+setenv BLOCKSIZE K
+setenv EDITOR vim
+setenv JAVA_HOME /usr/local/jdk1.4.2
+
+#set path_{prepend,append} to blank, so they can be customized for platforms
+set path_prepend = ()
+set path_append = ()
+
+if ($?VENDOR & $?OSTYPE) then
+    switch ($OSTYPE)
+        case "darwin":
+            if ( ( $?REMOTEHOST == 0 || $REMOTEHOST == "" ) && ( -f /usr/local/bin/mate ) ) then
+                setenv EDITOR 'mate -w '
+            endif
+
+            if ( ( $?REMOTEHOST == 0 || $REMOTEHOST == "" ) && ( -f /usr/local/sbin/mvim ) ) then
+                setenv EDITOR 'mvim -f --nomru -c "au VimLeave * \!open -a Terminal'
+                setenv EDITOR 'mvim -f '
+            endif
+
+            if ( ( $?REMOTEHOST == 0 || $REMOTEHOST == "" ) && ( -d /opt/local/lib/mysql55 ) ) then
+              alias mysql_start 'sudo /opt/local/lib/mysql55/bin/mysqld_safe  &'
+              alias mysql_stop /opt/local/lib/mysql55/bin/mysqladmin -u root shutdown
+            endif
+
+            setenv JAVA_HOME /Library/Java/Home
+
+            alias pman "man -t \!:* | open -f -a Preview"
+
+            set path_prepend = (/opt/local/sbin /opt/local/bin /opt/local/Library/Frameworks/Python.framework/Versions/2.6/bin)
+            set path_append = (/Developer/Tools)
+
+            breaksw
+        default:
+            breaksw
+    endsw
+endif
+
+set flex_sdk_dir = "/Applications/Adobe\ Flex\ Builder\ 3/sdks/3.2.0/bin"
+if ( -d "${flex_sdk_dir}" ) then
+    set path_append = ($path_append "${flex_sdk_dir}")
+endif
+
+setenv    JDK_HOME    $JAVA_HOME
+set path = (/sbin /bin $path_prepend /usr/sbin /usr/bin /usr/games /usr/local/sbin /usr/local/bin /usr/X11R6/bin $JAVA_HOME/bin ~/bin $path_append)
+
+if ($?prompt) then
+    set promptchars = '$#'
+    set filec
+    set addsuffix
+    set history = 100
+    set savehist = 100
+    set matchbeep = never
+    set visiblebell
+    set fignore = (\~)
+    unset ignoreeof
+
+    switch ($TERM)
+        case "xterm*":
+        case "screen*":
+            set prompt = "%{\033]0;%n@%m [%~]\007%}[%h] %B%n@%m%b (%P) [%C]%# ";
+            breaksw
+        default:
+            set prompt = "[%h] %B%n@%m%b (%P) [%C]%# "
+            breaksw
+    endsw
+
+    if ( $?tcsh ) then
+        bindkey "^W" backward-delete-word
+        bindkey -k up history-search-backward
+        bindkey -k down history-search-forward
+        bindkey "^F" complete-word-fwd
+        bindkey "^B" complete-word-back
+    endif
+endif
+
+set p="x"
+set p=(perl -I${HOME}/perl5/lib/perl5 -Mlocal::lib)
+eval $p

@@ -1,0 +1,303 @@
+" VIM configuration file
+
+" ========
+" Vundle
+"
+" Installed from: https://github.com/gmarik/vundle
+" git clone https://github.com/gmarik/vundle.git ~/.vim/bundle/vundle
+" ========
+
+scriptencoding utf-8
+set encoding=utf-8
+
+" turn off vi compatibility - affects a lot of vim options
+set nocompatible
+filetype off
+
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+
+" let Vundle manage Vundle
+Plugin 'gmarik/Vundle.vim'
+
+" My bundles here:
+Plugin 'phleet/vim-mercenary'
+Plugin 'tpope/vim-fugitive'
+Plugin 'scrooloose/nerdtree'
+Plugin 'jamessan/vim-gnupg'
+"Plugin 'jelera/vim-javascript-syntax'
+Bundle 'mustache/vim-mustache-handlebars'
+Bundle 'pangloss/vim-javascript'
+Bundle 'altercation/vim-colors-solarized'
+
+
+" All of your Plugins must be added before the following line
+call vundle#end()  " required by vundle
+filetype plugin indent on  " required by vundle
+
+" To ignore plugin indent changes, instead use:
+"filetype plugin on
+"
+" Brief help
+" :PluginList          - list configured plugins
+" :PluginInstall(!)    - install (update) plugins
+" :PluginSearch(!) foo - search (or refresh cache first) for foo
+" :PluginClean(!)      - confirm (or auto-approve) removal of unused plugins
+"
+" see :h vundle for more details or wiki for FAQ
+" Put your non-Plugin stuff after this line
+
+" ========
+" Settings
+" ========
+
+" turn on ruler
+set ru
+
+" visual bell instead of audial
+set vb
+
+" last status
+set ls=2
+
+" wild menus
+set wmnu
+
+" if we have gtk2, set font
+if has("gui_gtk2")
+    set guifont=Monospace\ 9
+elseif has("gui_macvim")
+    set guifont=Anonymous_Pro:h12
+    set guioptions-=T
+elseif has("gui_win32")
+    set guifont=Lucida_Console:h9:cANSI
+endif
+
+" show command
+set sc
+
+" escape keys
+set ek
+
+" don't go to the beginning of line when moving from line to line
+set nosol
+
+" line numbering
+set number
+
+" set text width at 80
+set tw=0
+
+" Default to soft tabs, 2 spaces
+" number of spaces in tab
+" number of spaces in shiftwidth
+set expandtab
+set ts=2
+set sw=2
+set sts=2
+" Except for Makefiles; hard tabs of width 2
+autocmd FileType make set ts=4
+" vimrc
+autocmd FileType vim set sw=4
+autocmd FileType vim set sts=4
+" And Markdown
+autocmd FileType markdown set sw=4
+autocmd FileType markdown set sts=4
+
+" tab and line end chars
+"if has('gui_running')
+  set list
+  set listchars=eol:¬,tab:»\ ,trail:·,extends:>,precedes:<
+"endif
+
+" highlight searching
+set hls
+
+" status line
+set statusline=%n:%<%t\ %m%r%w%y%=[%b]\ [%c:%l/%L\]\ [%P]
+
+" if using a version 6 vim, enable folding
+if version >= 600
+    " enable folding
+    set foldenable
+
+    " folding method
+    set foldmethod=syntax
+"    set foldmethod=marker
+"    set foldmethod=expr
+""    set foldmethod=indent
+""
+""    set foldexpr=MyFoldExpr(v:lnum)
+""    fun! MyFoldExpr(line)
+""        let str = getline(a:line)
+""        if str =~ '^{'
+""            return '1'
+""        elseif str =~ '^}'
+""            return '<1'
+""        else
+""            return foldlevel(a:line - 1)
+""        endif
+""    endfun
+
+    " enable use of mouse on +/- in folding
+    set foldcolumn=2
+
+    " start with open folds
+    set foldlevelstart=99
+endif
+
+" viminfo
+set vi=%,'50
+set vi+=\"100,:100
+set vi+=n~/.viminfo
+
+    " ==========
+    " Code Style
+    " ==========
+
+" What counts as part of a word (used for tag matching, and motion commands)
+set iskeyword=a-z,A-Z,48-57,_,.,-,>
+
+" How to wrap lines
+"   t=wrap lines
+"   c=wrap comments, inserting comment leader
+"   r=insert comment leader after an <ENTER>
+"   o=Insert comment leader after an 'o'
+"   q=Allow formatting of comments with 'gq'
+set formatoptions=tcroq
+
+" " Use C style indenting
+" set cindent
+" 
+" " Use the following rules to do C style indenting (:help cinoptions-values)
+" set cinoptions=>1s,e0,n1,f0,{1s,}0,^0s,=1s,\:1s,t0,+2s,c3,(0,u0,j1
+
+" Horizontal splits open below current file
+set splitbelow
+
+" Vertical splits open to the right of the current file
+set splitright
+
+" Make backapce rule the world
+set backspace=indent,eol,start
+
+
+" =============
+" Abbreviations
+" =============
+
+" abbreviations
+ab AUTHOR mayo
+
+" =======
+" Options
+" =======
+
+" syntax highlighting
+syntax on
+
+" ====================
+" Default Highlighting
+" ====================
+
+" OS X Terminal is not xterm-256color happy
+if has('macunix')
+  let g:solarized_termcolors=256
+endif
+
+if has('gui_running')
+  set background=light
+else
+  set background=dark
+endif
+
+colorscheme solarized
+
+"" make colors look good on dark background
+"set background=dark
+"
+"if has("gui_macvim")
+"    set transparency=5
+"    "    colors torte
+"endif
+"
+"" Cursor color
+""hi Cursor guifg=white guibg=black
+"
+"" user1 highlighting
+"hi User1 term=bold cterm=bold ctermfg=yellow ctermbg=blue guifg=yellow guibg=blue
+"
+"hi Todo guifg=black guibg=#ffff66
+"
+"" comment color
+"hi Comment term=none cterm=none gui=italic ctermfg=green guifg=green
+"
+"" status line color
+"hi StatusLine term=none cterm=none gui=none ctermfg=white ctermbg=blue guifg=lightgrey guibg=darkblue
+"hi StatusLineNC term=none cterm=none gui=none ctermfg=darkgrey ctermbg=grey guifg=black guibg=#575757
+"
+"" normal colors
+"hi Normal term=none ctermfg=grey ctermbg=black guifg=grey guibg=black
+"
+"" search colors
+"hi Search  ctermfg=white ctermbg=red guifg=white guibg=red
+"
+"" line numbers
+"hi LineNr term=none cterm=none ctermfg=darkgrey guifg=#696969
+"
+"" highlight non-text (tabs, trailing chars)
+"hi NonText term=none cterm=none guifg=#dddddd
+"2015
+"
+"" highlight meta and special keys, nonprintable text, listchars
+"hi SpecialKey ctermfg=red guifg=#696969
+"
+"" vertical split colors
+"hi VertSplit guifg=#575757 guibg=#575757
+"
+"" folded line color
+"hi Folded guifg=white guibg=darkgray
+"
+"" fold gutter
+"hi FoldColumn guifg=darkblue guibg=lightgray
+
+" ===================
+" Custom Command Maps
+" ===================
+
+"au CursorHold * call ShowBlockName('quiet')
+
+" Show the name of the function we're in on the message line; pnuemonic [[
+"map <silent> g[[ :call ShowBlockName()<CR>
+
+" Disable ShowBlockName (once); to prevent the CursorHold autocommand from
+" overwriting something in the command window (e.g., SyntaxAttr() output).
+"map <silent> g]] :call ShowBlockName('OFF')<CR>
+
+" Tweak commands like [d so that they disable ShowBlockName so
+" it doesn't obliterate the output of this command.
+"nnoremap [d :call ShowBlockName('[d')<CR>
+"nnoremap [i :call ShowBlockName('[i')<CR> 
+
+map <F2> :NERDTreeToggle<CR>
+let NERDTreeIgnore = ['\.pyc$']
+autocmd vimenter * if !argc() | NERDTree | endif
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q |
+
+" Make vim recognize svn commit logs when spawn by svn ci
+au BufNewFile,BufRead  svn-commit.* setf svn
+
+au BufRead,BufNewFile {Gemfile,Rakefile,Capfile,*.rake,config.ru}     set ft=ruby
+
+" Map .md to markdown instead of modula
+au BufRead,BufNewFile {*.md,*.mkd,*.markdown}                         set ft=markdown
+
+" don't do backups for cronfiles
+au BufNewFile,BufRead /tmp/crontab* set nobackup nowritebackup
+
+" ==========================
+" Autoload scripts on demand
+" ==========================
+
+autocmd FuncUndefined * exe 'runtime autoload/' . expand('<afile>') . '.vim'
+
