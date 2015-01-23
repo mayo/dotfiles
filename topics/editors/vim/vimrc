@@ -20,15 +20,25 @@ call vundle#begin()
 " let Vundle manage Vundle
 Plugin 'gmarik/Vundle.vim'
 
-" My bundles here:
+" Command helpers/wrappers
 Plugin 'phleet/vim-mercenary'
 Plugin 'tpope/vim-fugitive'
-Plugin 'scrooloose/nerdtree'
 Plugin 'jamessan/vim-gnupg'
-"Plugin 'jelera/vim-javascript-syntax'
-Bundle 'mustache/vim-mustache-handlebars'
-Bundle 'pangloss/vim-javascript'
-Bundle 'altercation/vim-colors-solarized'
+
+" Utilities
+Plugin 'scrooloose/nerdtree'
+Plugin 'vim-scripts/DirDiff.vim'
+
+" Syntax
+Plugin 'mustache/vim-mustache-handlebars'
+Plugin 'pangloss/vim-javascript'
+
+" Colors
+Plugin 'altercation/vim-colors-solarized'
+Plugin 'Lokaltog/vim-distinguished'
+Plugin 'vim-scripts/github-theme'
+Plugin 'vim-scripts/gruvbox'
+Plugin 'vim-scripts/mayansmoke'
 
 
 " All of your Plugins must be added before the following line
