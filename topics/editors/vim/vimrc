@@ -200,16 +200,14 @@ syntax on
 " Default Highlighting
 " ====================
 
-" OS X Terminal is not xterm-256color happy
-if has('macunix')
-  let g:solarized_termcolors=256
-endif
-
 if has('gui_running')
   set background=light
 else
   set background=dark
 endif
+
+let g:solarized_termcolors=256
+let g:solarized_visibility="low"
 
 colorscheme solarized
 
