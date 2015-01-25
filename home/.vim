@@ -1,1 +1,1 @@
-topics/editors/vim
+../topics/editors/vim

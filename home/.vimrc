@@ -1,1 +1,1 @@
-topics/editors/vim/vimrc
+../topics/editors/vim/vimrc
