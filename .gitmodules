@@ -1,0 +1,3 @@
+[submodule "bin/dotdepot"]
+	path = bin/dotdepot
+	url = https://github.com/mayo/dotdepot
