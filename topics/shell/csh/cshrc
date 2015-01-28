@@ -25,6 +25,7 @@ if ($?VENDOR & $?OSTYPE) then
             if ( ( $?REMOTEHOST == 0 || $REMOTEHOST == "" ) && ( -f /usr/local/sbin/mvim ) ) then
                 setenv EDITOR 'mvim -f --nomru -c "au VimLeave * \!open -a Terminal'
                 setenv EDITOR 'mvim -f '
+                alias vim mvim -v
             endif
 
             if ( ( $?REMOTEHOST == 0 || $REMOTEHOST == "" ) && ( -d /opt/local/lib/mysql55 ) ) then
