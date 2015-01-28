@@ -6,7 +6,7 @@ alias ll ls -lA
 
 umask 22
 
-setenv PAGER more
+setenv PAGER "more -R"
 setenv BLOCKSIZE K
 setenv EDITOR vim
 setenv JAVA_HOME /usr/local/jdk1.4.2
