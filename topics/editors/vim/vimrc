@@ -216,7 +216,7 @@ else
   set background=dark
 endif
 
-let g:solarized_termcolors=256
+"let g:solarized_termcolors=256
 let g:solarized_visibility="low"
 
 colorscheme solarized
