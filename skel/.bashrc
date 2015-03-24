@@ -1,0 +1,1 @@
+../topics/shell/bash/bashrc
