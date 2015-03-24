@@ -1,0 +1,10 @@
+set bind-tty-special-chars off
+
+set show-all-if-ambiguous on
+set completion-ignore-case on
+set bell-style visible
+
+"\C-w": backward-kill-word
+"\e[A": history-search-backward
+"\e[B": history-search-forward
+
