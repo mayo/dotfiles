@@ -75,7 +75,7 @@ set wmnu
 
 " if we have gtk2, set font
 if has("gui_gtk2")
-    set guifont=Monospace\ 9
+    set guifont=Anonymous\ Pro\ 12
 elseif has("gui_macvim")
     set guifont=Anonymous_Pro:h12
     set guioptions-=T
