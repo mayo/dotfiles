@@ -2,24 +2,24 @@
   excludesfile=~/.gitignore
 [user]
   name = Mayo Jordanov
-  email = mayo@oyam.ca
+  email = mjordanov@coppertreeanalytics.com
 [alias]
-    ci = commit
-    st = status
-    co = checkout
+  ci = commit
+  st = status
+  co = checkout
   up = pull --rebase
 [color]
   ui = auto
 [push]
   default = simple
 [diff]
-  tool = mvimdiff
+  tool = gvimdiff
 [merge]
-	tool = fugitive
+  tool = fugitive
 [mergetool]
   keepBackup = true
 
-[difftool "mvimdiff"]
-  cmd = mvim -f -d \"$LOCAL\" \"$REMOTE\"
+[difftool "gvimdiff"]
+  cmd = gvim -f -d \"$LOCAL\" \"$REMOTE\"
 [mergetool "fugitive"]
-	cmd = vim -f -c \"Gdiff\" \"$MERGED\"
+  cmd = gvim -f -c \"Gdiff\" \"$MERGED\"

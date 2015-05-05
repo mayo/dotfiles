@@ -86,6 +86,8 @@ alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
 
+alias more='less -X'
+
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
@@ -113,14 +115,46 @@ fi
 
 alias kai-psql='sudo -u postgres PAGER="less -X" psql'
 
+alias tmux='TERM=$TERM tmux'
+
 export PAGER="less -X"
 
 case "$TERM" in
   xterm*|screen*)
-    export PS1="\[\033]0;\u@\h [\W]\007\][\!] \[\033[1m\]\u@\h\[\033[0m\] (\A) [\W]\$ "
+    export PS1="\[\033]0;\u@\h [\W]\007\][\!] \[\033[1m\]\u@\h\[\033[0m\] (\A) [\W]\\$ "
     ;;
   *)
-    export PS1="[\!] \[\033[1m\]\u@\h\[\033[0m\] (\A) [\W]\$ "
+    export PS1="[\!] \[\033[1m\]\u@\h\[\033[0m\] (\A) [\W]\\$ "
     ;;
 esac
+
+
+case "$COLORTERM" in
+  gnome-terminal)
+    export TERM=xterm-256color
+    ;;
+esac
+
+SSH_ENV="$HOME/.ssh/agent.env"
+
+start_agent() {
+  echo -n "Initialising new SSH agent..."
+
+  /usr/bin/ssh-agent | sed 's/^echo/#echo/' > "${SSH_ENV}"
+  echo done
+
+  chmod 600 "${SSH_ENV}"
+  . "${SSH_ENV}" > /dev/null
+  /usr/bin/ssh-add;
+}
+
+
+
+if [ -f "${SSH_ENV}" ]; then
+  . "${SSH_ENV}" > /dev/null
+  #ps ${SSH_AGENT_PID} doesn't work under cywgin
+  ps -ef | grep ${SSH_AGENT_PID} | grep 'ssh-agent$' > /dev/null || { start_agent; }
+else
+  start_agent;
+fi
 
