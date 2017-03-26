@@ -108,12 +108,14 @@ if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
     . /etc/bash_completion
 fi
 
+if [ -f /Applications/Xcode.app/Contents/Developer/usr/share/git-core/git-prompt.sh ]; then
+  . /Applications/Xcode.app/Contents/Developer/usr/share/git-core/git-prompt.sh
+fi
+
 
 #bind set completion-ignore-case on
 #bind "\C-p": history-search-backward
 #bind "\C-n": history-search-forward
-
-alias kai-psql='sudo -u postgres PAGER="less -X" psql'
 
 alias tmux='TERM=$TERM tmux'
 
