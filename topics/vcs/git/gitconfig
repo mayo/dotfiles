@@ -2,7 +2,7 @@
   excludesfile=~/.gitignore
 [user]
   name = Mayo Jordanov
-  email = mjordanov@coppertreeanalytics.com
+  email = mayo@oyam.ca
 [alias]
   ci = commit
   st = status
