@@ -24,6 +24,7 @@ Plugin 'gmarik/Vundle.vim'
 Plugin 'phleet/vim-mercenary'
 Plugin 'tpope/vim-fugitive'
 Plugin 'jamessan/vim-gnupg'
+Plugin 'nfvs/vim-perforce'
 
 " Utilities
 Plugin 'scrooloose/nerdtree'
