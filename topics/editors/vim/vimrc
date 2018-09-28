@@ -32,6 +32,7 @@ Plugin 'vim-scripts/DirDiff.vim'
 " Syntax
 Plugin 'mustache/vim-mustache-handlebars'
 Plugin 'pangloss/vim-javascript'
+Plugin 'editorconfig/editorconfig-vim'
 
 " Colors
 Plugin 'altercation/vim-colors-solarized'
@@ -75,7 +76,7 @@ set wmnu
 
 " if we have gtk2, set font
 if has("gui_gtk2")
-    set guifont=Anonymous\ Pro\ 13
+    set guifont=SourceCode\ Pro\ 11
 elseif has("gui_macvim")
     set guifont=Anonymous_Pro:h12
     set guioptions-=T
@@ -287,10 +288,10 @@ colorscheme solarized
 "nnoremap [d :call ShowBlockName('[d')<CR>
 "nnoremap [i :call ShowBlockName('[i')<CR> 
 
-"map <F2> :NERDTreeToggle<CR>
-"let NERDTreeIgnore = ['\.pyc$']
+map <F2> :NERDTreeToggle<CR>
+let NERDTreeIgnore = ['\.pyc$']
 "autocmd vimenter * if !argc() | NERDTree | endif
-"autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q |
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q |
 
 " Make vim recognize svn commit logs when spawn by svn ci
 au BufNewFile,BufRead  svn-commit.* setf svn
