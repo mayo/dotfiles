@@ -74,7 +74,6 @@ if [ -x /usr/bin/dircolors ]; then
     test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
     alias ls='ls --color=auto'
     alias dir='dir --color=auto'
-    alias vdir='vdir --color=auto'
 
     alias grep='grep --color=auto'
     alias fgrep='fgrep --color=auto'
@@ -106,16 +105,21 @@ fi
 # sources /etc/bash.bashrc).
 if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
     . /etc/bash_completion
+elif [ -f /usr/share/bash-completion/bash_completion ] && ! shopt -oq posix; then
+    . /usr/share/bash-completion/bash_completion
 fi
 
+if [ -f /Applications/Xcode.app/Contents/Developer/usr/share/git-core/git-prompt.sh ]; then
+    . /Applications/Xcode.app/Contents/Developer/usr/share/git-core/git-prompt.sh
+fi
+
+if [ -f /usr/share/git-core/contrib/completion/git-prompt.sh ]; then
+    . /usr/share/git-core/contrib/completion/git-prompt.sh
+fi
 
 #bind set completion-ignore-case on
 #bind "\C-p": history-search-backward
 #bind "\C-n": history-search-forward
-
-alias kai-psql='sudo -u postgres PAGER="less -X" psql'
-
-alias tmux='TERM=$TERM tmux'
 
 export PAGER="less -X"
 
@@ -135,6 +139,23 @@ case "$COLORTERM" in
     ;;
 esac
 
+# Default to vi, it should exist everywhere
+EDITOR=vi
+
+HAVE_DISPLAY=0
+[ -n "${DISPLAY}" ] && HAVE_DISPLAY=1
+
+# I like gvim when there is display present
+editor=$(which gvim)
+[ $HAVE_DISPLAY -eq 1 ] && [ -n "${editor}" ] && EDITOR=${editor}
+
+case "${OSTYPE}" in
+  darwin*)
+    [ -z "${REMOTEHOST}" ] && [ -x "$(command -v mate)" ] && EDITOR='mate -w '
+    [ -z "${REMOTEHOST}" ] && [ -x "$(command -v mvim)" ] && EDITOR='mvim -f '
+    ;;
+esac
+
 SSH_ENV="$HOME/.ssh/agent.env"
 
 start_agent() {
@@ -147,8 +168,6 @@ start_agent() {
   . "${SSH_ENV}" > /dev/null
   /usr/bin/ssh-add;
 }
-
-
 
 if [ -f "${SSH_ENV}" ]; then
   . "${SSH_ENV}" > /dev/null
