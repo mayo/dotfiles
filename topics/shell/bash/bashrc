@@ -110,7 +110,7 @@ elif [ -f /usr/share/bash-completion/bash_completion ] && ! shopt -oq posix; the
 fi
 
 if [ -f /Applications/Xcode.app/Contents/Developer/usr/share/git-core/git-prompt.sh ]; then
-    . /Applications/Xcode.app/Contents/Developer/usr/share/git-core/git-prompt.sh
+  . /Applications/Xcode.app/Contents/Developer/usr/share/git-core/git-prompt.sh
 fi
 
 if [ -f /usr/share/git-core/contrib/completion/git-prompt.sh ]; then
