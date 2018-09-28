@@ -84,6 +84,3 @@ if ($?prompt) then
     endif
 endif
 
-set p="x"
-set p=(perl -I${HOME}/perl5/lib/perl5 -Mlocal::lib)
-eval $p
