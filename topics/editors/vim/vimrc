@@ -163,6 +163,9 @@ set vi=%,'50
 set vi+=\"100,:100
 set vi+=n~/.viminfo
 
+set wildignore+=*/tmp/*,*.so,*.swp,*.zip     " MacOSX/Linux
+set wildignore+=*\\tmp\\*,*.swp,*.zip,*.exe  " Windows
+
     " ==========
     " Code Style
     " ==========
@@ -317,7 +320,7 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTree
 
 let g:ctrlp_custom_ignore = {
   \ 'dir':  '\v[\/](\.(git|hg|svn)|\_site)$',
-  \ 'file': '\v\.(exe|so|dll|class|png|jpg|jpeg)$',
+  \ 'file': '\v\.(exe|so|dll|class|png|jpg|jpeg|pyc|o)$',
 \}
 
 " Use nearest .git/.svn, etc for file search path
