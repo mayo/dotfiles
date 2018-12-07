@@ -29,6 +29,7 @@ Plugin 'nfvs/vim-perforce'
 " Utilities
 Plugin 'scrooloose/nerdtree'
 Plugin 'vim-scripts/DirDiff.vim'
+Plugin 'kien/ctrlp.vim'
 
 " Syntax
 Plugin 'mustache/vim-mustache-handlebars'
@@ -185,7 +186,7 @@ set formatoptions=tcroq
 " set cinoptions=>1s,e0,n1,f0,{1s,}0,^0s,=1s,\:1s,t0,+2s,c3,(0,u0,j1
 
 " Horizontal splits open below current file
-set splitbelow
+"set splitabove
 
 " Vertical splits open to the right of the current file
 set splitright
@@ -289,11 +290,6 @@ colorscheme solarized
 "nnoremap [d :call ShowBlockName('[d')<CR>
 "nnoremap [i :call ShowBlockName('[i')<CR> 
 
-map <F2> :NERDTreeToggle<CR>
-let NERDTreeIgnore = ['\.pyc$']
-"autocmd vimenter * if !argc() | NERDTree | endif
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q |
-
 " Make vim recognize svn commit logs when spawn by svn ci
 au BufNewFile,BufRead  svn-commit.* setf svn
 
@@ -305,9 +301,33 @@ au BufRead,BufNewFile {*.md,*.mkd,*.markdown}                         set ft=mar
 " don't do backups for cronfiles
 au BufNewFile,BufRead /tmp/crontab* set nobackup nowritebackup
 
+" ====================
+" Plugin Configuration
+" ====================
+
+" NerdTree
+" ========
+
+map <F2> :NERDTreeToggle<CR>
+let NERDTreeIgnore = ['\.pyc$']
+"autocmd vimenter * if !argc() | NERDTree | endif
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q |
+
+" CtrlP
+" =====
+
+let g:ctrlp_custom_ignore = {
+  \ 'dir':  '\v[\/](\.(git|hg|svn)|\_site)$',
+  \ 'file': '\v\.(exe|so|dll|class|png|jpg|jpeg)$',
+\}
+
+" Use nearest .git/.svn, etc for file search path
+let g:ctrlp_working_path_mode = 'r'
+
 " ==========================
 " Autoload scripts on demand
 " ==========================
 
-autocmd FuncUndefined * exe 'runtime autoload/' . expand('<afile>') . '.vim'
+" Disabled as it interferes with Vundle
+"autocmd FuncUndefined * exe 'runtime autoload/' . expand('<afile>') . '.vim'
 
