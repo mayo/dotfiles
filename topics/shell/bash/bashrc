@@ -113,6 +113,13 @@ if [ -f /Applications/Xcode.app/Contents/Developer/usr/share/git-core/git-prompt
   . /Applications/Xcode.app/Contents/Developer/usr/share/git-core/git-prompt.sh
 fi
 
+_completions_dir=/opt/local/share/bash-completion/completions
+if [ -d "$_completions_dir" ]; then
+    for f in `find "$_completions_dir" -type f`; do
+        [ -n "$(which $(basename "$f"))" ] && . "$f"
+    done
+fi
+
 if [ -f /usr/share/git-core/contrib/completion/git-prompt.sh ]; then
     . /usr/share/git-core/contrib/completion/git-prompt.sh
 fi
@@ -155,6 +162,9 @@ case "${OSTYPE}" in
     [ -z "${REMOTEHOST}" ] && [ -x "$(command -v mvim)" ] && EDITOR='mvim -f '
     ;;
 esac
+
+_tools="$HOME/Tools"
+[ -d "$_tools" ] && export PATH="${_tools}:${PATH}"
 
 SSH_ENV="$HOME/.ssh/agent.env"
 
