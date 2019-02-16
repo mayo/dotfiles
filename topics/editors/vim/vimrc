@@ -80,7 +80,7 @@ set wmnu
 if has("gui_gtk2")
     set guifont=SourceCode\ Pro\ 11
 elseif has("gui_macvim")
-    set guifont=Anonymous_Pro:h12
+    set guifont=Source\ Code\ Pro:h14,Anonymous_Pro:h12
     set guioptions-=T
 elseif has("gui_win32")
     set guifont=Lucida_Console:h9:cANSI
