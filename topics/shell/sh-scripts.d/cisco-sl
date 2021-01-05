@@ -1,0 +1,26 @@
+sl_ntp_fix() {
+  [[ -z "$1" ]] && echo "specify hostname or IP" && return 1
+  ssh $1 "sudo systemctl stop ntp; sudo ntpd -qg; sudo systemctl start ntp; systemctl status ntp"
+}
+
+sl_dd_slvm() {
+        SL_SKIP_UPGRADE_CHECK=true sl monitor datadog login --org-id cd07d04d6
+}
+
+sl_dd_rebox() {
+        SL_SKIP_UPGRADE_CHECK=true sl monitor datadog login --org-id 54d458fd7
+}
+
+sl_get_vm_config_id() {
+  DEPLOY_CONFIG_ID=$1
+
+  if [ ! -z "${REFRESH}" ]; then
+    SL_SKIP_UPGRADE_CHECK=true sl iam token refresh
+  fi
+
+  RES=$(curl -s -H"Authorization: Bearer $(cat ~/.sl/tokens | jq -r .access_token)" -XGET https://scheduler.vm.strln.net/v3/virtualMachines?deployment_configuration_id=${DEPLOY_CONFIG_ID})
+  ALLOC_ID=$(echo $RES | jq '.[].id')
+  IP=$(echo $RES | jq -r '.[].interfaces[].ipv4')
+
+  echo "${ALLOC_ID} ${IP}"
+}
