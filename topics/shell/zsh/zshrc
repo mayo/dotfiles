@@ -1,0 +1,91 @@
+# Enable color codes
+autoload colors && colors
+
+# History
+HISTFILE=~/.histfile
+HISTSIZE=15000
+SAVEHIST=10000
+setopt appendhistory
+setopt share_history # share history between different instances of the shell
+setopt HIST_EXPIRE_DUPS_FIRST
+setopt hist_ignore_all_dups # remove older duplicate entries from history
+setopt HIST_IGNORE_DUPS
+setopt HIST_FIND_NO_DUPS
+setopt hist_reduce_blanks # remove superfluous blanks from history items
+setopt inc_append_history # save history entries as soon as they are entered
+
+# Disable some black magic
+unsetopt autocd
+unsetopt extendedglob
+
+# emacs edit style
+bindkey -e
+
+# Make delete work
+bindkey "^[3;5~" delete-char
+bindkey "^[[3~" delete-char
+
+# Sane path-oriented backward kill
+my-backward-kill-word () {
+    # Remove slash, so it's treated as separator
+    local WORDCHARS=${WORDCHARS/\//}
+    zle -f kill # Append to the kill ring on subsequent kills.
+    zle backward-kill-word
+}
+zle -N my-backward-kill-word
+bindkey '^w' my-backward-kill-word
+
+# Search command history with arrows
+autoload -U up-line-or-beginning-search
+autoload -U down-line-or-beginning-search
+zle -N up-line-or-beginning-search
+zle -N down-line-or-beginning-search
+bindkey "^[[A" up-line-or-beginning-search # Up
+bindkey "^[[B" down-line-or-beginning-search # Down
+
+# git branch status
+autoload -Uz vcs_info
+zstyle ':vcs_info:*' enable git
+zstyle ':vcs_info:git*' formats "[%{$fg[yellow]%}%r%{$reset_color%}#%{$fg[red]%}%b%{$reset_color%}%{$fg[white]%} %m%u%c%{$reset_color%}]"
+zstyle ':vcs_info:*' check-for-changes true 
+zstyle ':vcs_info:*' check-for-staged-changes true
+add-zsh-hook precmd vcs_info
+
+setopt prompt_subst
+
+# PROMPT
+export PS1='!%! %T %B%n@%m%b %1~/ %# '
+export RPS1='${vcs_info_msg_0_}'
+export PROMPT=$PS1
+# The following lines were added by compinstall
+
+# Set how tab key completes
+bindkey '^i' expand-or-complete-prefix
+
+# Completion
+zstyle ':completion:*' completer _expand _complete _ignored #_approximate
+#zstyle ':completion:*' completer _complete _ignored _approximate
+zstyle ':completion:*' group-name ''
+zstyle ':completion:*' matcher-list '' 'm:{[:lower:]}={[:upper:]}'
+zstyle ':completion:*' max-errors 5
+# Autocomplete special dirs, like ..
+zstyle ':completion:*' special-dirs true
+zstyle :compinstall filename '/Users/mjordano/.zshrc'
+
+
+# Initialze completion system
+autoload -Uz compinit
+compinit
+
+# Sane tab completion on ambiguous matches - show a list, but doesn't cycle
+setopt bash_auto_list
+setopt no_auto_menu
+unsetopt ALWAYS_LAST_PROMPT
+
+# less is more
+alias more='less -X'
+
+# Evaludate extra scripts
+for bcfile in ~/.sh-scripts.d/*; do
+    [ -f "${bcfile}" ] && source "${bcfile}"
+done
