@@ -29,6 +29,11 @@ Plugin 'jamessan/vim-gnupg'
 Plugin 'scrooloose/nerdtree'
 Plugin 'vim-scripts/DirDiff.vim'
 Plugin 'kien/ctrlp.vim'
+Plugin 'nathangrigg/vim-beancount'
+
+if has('python3')
+    Plugin 'msmhrt/py3venv.vim'
+endif
 
 " Syntax
 Plugin 'mustache/vim-mustache-handlebars'
@@ -119,7 +124,7 @@ autocmd FileType markdown set sts=4
 " tab and line end chars
 "if has('gui_running')
   set list
-  set listchars=eol:¬,tab:»\ ,trail:·,extends:>,precedes:<
+  set listchars=eol:ï¿½,tab:ï¿½\ ,trail:ï¿½,extends:>,precedes:<
 "endif
 
 " highlight searching

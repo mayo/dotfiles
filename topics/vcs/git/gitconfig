@@ -1,8 +1,9 @@
 [core]
-  excludesfile=~/.gitignore
+	excludesfile = /Users/mayo/.gitignore
 [user]
-  name = Mayo Jordanov
-  email = mayo@oyam.ca
+	name = Mayo Jordanov
+	email = mayo@oyam.ca
+	signingkey = E68BFC3397845B93
 [alias]
   ci = commit
   st = status
@@ -23,3 +24,11 @@
   cmd = gvim -f -d \"$LOCAL\" \"$REMOTE\"
 [mergetool "fugitive"]
   cmd = gvim -f -c \"Gdiff\" \"$MERGED\"
+[difftool "sourcetree"]
+	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
+	path = 
+[mergetool "sourcetree"]
+	cmd = /Applications/Sourcetree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
+	trustExitCode = true
+[commit]
+	template = /Users/mayo/.stCommitMsg
