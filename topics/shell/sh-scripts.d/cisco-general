@@ -1,0 +1,47 @@
+PROJECT_BASE="/Users/mjordano/Projects"
+PROJECT_DIR=${PROJECT_DIR:-"${PROJECT_BASE}/cisco/compute-vm"}
+
+_work_project_name() {
+  echo $(echo $PWD | sed -E "s#^${PROJECT_DIR}/([^/]+)(/.*)?\$#\1#")
+}
+
+work-makepyenv() {
+  PROJECT_NAME=$(_work_project_name)
+  PYENV_DIR="${PROJECT_BASE}/pyenv-${PROJECT_NAME}"
+  if [ ! -f "$PYENV_DIR/bin/activate" ]; then
+    echo "${PROJECT_NAME}: Creating Python virtual env"
+    python3 -m venv --prompt $PROJECT_NAME "${PYENV_DIR}"
+  else
+    echo "${PROJECT_NAME}: Python virtual env already exists"
+  fi
+}
+
+work-here() {
+  PROJECT_NAME=$(_work_project_name)
+
+  PYENV_BIN="${PROJECT_BASE}/pyenv-${PROJECT_NAME}/bin/activate"
+  if [ -f "$PYENV_BIN" ]; then
+    echo "${PROJECT_NAME}: Found Python virtual env, activating..."
+    source ${PYENV_BIN}
+  else
+    echo "${PROJECT_NAME}: Python virtual env not found"
+  fi
+
+  GOPATH="${PROJECT_DIR}/${PROJECT_NAME}"
+  GOBIN="$GOPATH/bin"
+  if [ -d "${GOPATH}/src" ] && [ -d "${GOBIN}" ]; then
+    echo "${PROJECT_NAME}: Looks like Golang project, setting up GOPATH"
+    export GOPATH
+    echo $GOBIN
+    case :${PATH}: in
+      *:${GOBIN}:*);;
+        #Already on path
+      *)
+        echo "${PROJECT_NAME}: Adding GOPATH/bin to PATH"
+        export PATH="${GOBIN}:${PATH}"
+      ;;
+    esac
+  else
+    echo "${PROJECT_NAME}: Doesn't look like a Golang project, skipping Go setup"
+  fi 
+}

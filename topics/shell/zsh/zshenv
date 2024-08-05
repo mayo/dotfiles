@@ -1,0 +1,4 @@
+export PATH="$HOME/bin:$HOME/go/bin:${PATH}"
+export PAGER="less -X"
+export EDITOR=vi
+

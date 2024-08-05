@@ -1,0 +1,113 @@
+# Enable color codes
+autoload colors && colors
+
+# History
+HISTFILE=~/.histfile
+HISTSIZE=15000
+SAVEHIST=10000
+
+setopt HIST_EXPIRE_DUPS_FIRST # remove older duplicate entries from history before unique entries
+# Breaks my workflow
+# setopt HIST_IGNORE_ALL_DUPS # don't append duplicates to history
+setopt HIST_FIND_NO_DUPS
+setopt HIST_IGNORE_SPACE # Remove command lines with leading space from the history
+setopt HIST_REDUCE_BLANKS # remove superfluous blanks from history items
+setopt INC_APPEND_HISTORY_TIME # save history entries as soon as they are entered
+# Breaks my workflow of using multiple terminals for different tasks.
+#setopt SHARE_HISTORY # share history between different instances of the shell
+
+# Disable some black magic
+unsetopt autocd
+unsetopt extendedglob
+
+# Edit style
+bindkey -v
+
+# Make delete work
+bindkey "^[3;5~" delete-char
+bindkey -a "^[[3~" delete-char
+
+bindkey '^A' vi-beginning-of-line
+bindkey '^E' vi-end-of-line
+
+# Sane path-oriented backward kill
+my-backward-kill-word () {
+    # Remove slash, so it's treated as separator
+    local WORDCHARS=${WORDCHARS/\//}
+    zle -f kill # Append to the kill ring on subsequent kills.
+    zle backward-kill-word
+}
+zle -N my-backward-kill-word
+bindkey '^w' my-backward-kill-word
+
+# Search command history with arrows
+autoload -U up-line-or-beginning-search
+autoload -U down-line-or-beginning-search
+zle -N up-line-or-beginning-search
+zle -N down-line-or-beginning-search
+bindkey "^[[A" up-line-or-beginning-search # Up
+bindkey "^[[B" down-line-or-beginning-search # Down
+
+# git branch status
+autoload -Uz vcs_info
+zstyle ':vcs_info:*' enable git
+zstyle ':vcs_info:git*' formats "[%{$fg[yellow]%}%r%{$reset_color%}#%{$fg[red]%}%b%{$reset_color%}%{$fg[white]%}%m%u%c%{$reset_color%}]"
+zstyle ':vcs_info:git*' actionformats "[%{$fg[yellow]%}%r%{$reset_color%}(%a|%m)#%{$fg[red]%}%b%{$reset_color%}%{$fg[white]%}%m%u%c%{$reset_color%}]"
+zstyle ':vcs_info:git:*' patch-format '%10>...>%p%<< (%n applied)'
+zstyle ':vcs_info:*' check-for-changes true 
+zstyle ':vcs_info:*' check-for-staged-changes true
+add-zsh-hook precmd vcs_info
+
+setopt prompt_subst
+
+# PROMPT
+# Prompt color indicator for shell vim mode
+vim_ins_mode="%{$reset_color%}"
+vim_cmd_mode="%{$fg[red]%}"
+vim_mode_color=$vim_ins_mode
+
+function zle-keymap-select {
+  vim_mode_color="${${KEYMAP/vicmd/${vim_cmd_mode}}/(main|viins)/${vim_ins_mode}}"
+  zle reset-prompt
+}
+zle -N zle-keymap-select
+
+function zle-line-finish {
+  vim_mode_color=$vim_ins_mode
+}
+zle -N zle-line-finish
+
+export PS1='!%! %T %B%n@%m%b %1~/ ${vim_mode_color}%#%{$reset_color%} '
+export RPS1='${vcs_info_msg_0_}'
+export PROMPT=$PS1
+
+# Set how tab key completes
+bindkey '^i' expand-or-complete-prefix
+
+# Completion
+zstyle ':completion:*' completer _expand _complete _ignored _approximate
+zstyle ':completion:*' group-name ''
+zstyle ':completion:*' matcher-list '' 'm:{[:lower:]}={[:upper:]}'
+zstyle ':completion:*' max-errors 3
+zstyle ':completion:*' special-dirs true # Autocomplete special dirs, like ..
+zstyle :compinstall filename '/Users/mjordano/.zshrc'
+
+# Load functions
+fpath=(~/.zsh/functions $fpath)
+
+# Initialze completion system
+autoload -Uz compinit
+compinit -u
+
+# Sane tab completion on ambiguous matches - show a list, but doesn't cycle
+setopt bash_auto_list
+setopt no_auto_menu
+unsetopt ALWAYS_LAST_PROMPT
+
+# less is more
+alias more='less -X'
+
+# Evaludate extra scripts
+for bcfile in ~/.sh-scripts.d/*; do
+    [ -f "${bcfile}" ] && source "${bcfile}"
+done
