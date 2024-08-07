@@ -1,21 +1,57 @@
 SSH_ENV="$HOME/.ssh/agent.env"
 
-start_agent() {
-  echo -n "Initialising new SSH agent..."
+# This will be terminal-window specific, and should not be stored in the env file
+GPG_TTY=$(tty); export GPG_TTY
 
-  /usr/bin/ssh-agent | sed 's/^echo/#echo/' > "${SSH_ENV}"
-  echo done
+start_agent() {
+  if grep enable-ssh-support ~/.gnupg/gpg-agent.conf > /dev/null; then
+    echo -n "Initialising GPG agent..."
+
+    unset SSH_AGENT_PID
+
+    cat > "${SSH_ENV}" <<- "EOF"
+	SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket); export SSH_AUTH_SOCK;
+	#gpgconf --launch gpg-agent
+	#gpg-connect-agent /bye
+	EOF
+
+    gpgconf --launch gpg-agent
+    gpg-connect-agent /bye
+
+    . "${SSH_ENV}" > /dev/null
+    echo $SSH_ENV
+
+    echo done
+
+  else
+    echo -n "Initialising new SSH agent..."
+
+    /usr/bin/ssh-agent | sed 's/^echo/#echo/' > "${SSH_ENV}"
+    . "${SSH_ENV}" > /dev/null
+    /usr/bin/ssh-add;
+
+    echo done
+  fi
 
   chmod 600 "${SSH_ENV}"
-  . "${SSH_ENV}" > /dev/null
-  /usr/bin/ssh-add;
 }
 
 if [ -f "${SSH_ENV}" ]; then
-  . "${SSH_ENV}" > /dev/null
-  #ps ${SSH_AGENT_PID} doesn't work under cywgin
+  agent_pid=$(. "${SSH_ENV}" > /dev/null; echo $SSH_AGENT_PID)
+
+  # If PID is empty (using gpg-agent or bogus env file), start agent
+  # If there is a PID, check it and start agent if it's not running
+
+  #ps -p ${SSH_AGENT_PID} doesn't work under cywgin
   #ps -ef | grep ${SSH_AGENT_PID} | grep 'ssh-agent$' > /dev/null || { start_agent; }
-  pgrep ssh-agent | grep ${SSH_AGENT_PID} > /dev/null || { start_agent; }
+  #pgrep ssh-agent | grep "${SSH_AGENT_PID}" > /dev/null || { start_agent; }
+
+  if [ -z "$agent_pid" ] || ! ps -p $agent_pid > /dev/null || ! pgrep gpg-agent; then
+    start_agent
+  else
+    . "${SSH_ENV}" > /dev/null
+  fi
+
 else
   start_agent;
 fi
