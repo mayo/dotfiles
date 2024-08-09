@@ -93,11 +93,14 @@ zstyle ':completion:*' special-dirs true # Autocomplete special dirs, like ..
 zstyle :compinstall filename '/Users/mjordano/.zshrc'
 
 # Load functions
-fpath=(~/.zsh/functions $fpath)
+#fpath=(~/.zsh/functions /opt/local/share/zsh/site-functions $fpath)
+fpath=(/opt/local/share/zsh/site-functions $fpath)
 
 # Initialze completion system
 autoload -Uz compinit
 compinit -u
+
+autoload -Uz _pass
 
 # Sane tab completion on ambiguous matches - show a list, but doesn't cycle
 setopt bash_auto_list
@@ -111,3 +114,4 @@ alias more='less -X'
 for bcfile in ~/.sh-scripts.d/*; do
     [ -f "${bcfile}" ] && source "${bcfile}"
 done
+
