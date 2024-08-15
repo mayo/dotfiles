@@ -1,9 +1,10 @@
 [core]
 	excludesfile = /Users/mayo/.gitignore
+	symlinks = true
 [user]
 	name = Mayo Jordanov
 	email = mjordanov@wasabi.com
-	signingkey = E68BFC3397845B93
+	signingkey = 8AA2D5453E3BD3C3
 [alias]
   ci = commit
   st = status
